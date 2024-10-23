@@ -11,11 +11,17 @@
 					margin: 0 5px;
 				">
 				<div
-					v-for="(index, i) in loopCount"
+					v-for="(item, i) in items"
 					:key="i"
 					class="smallSelected"
-					@click="scrollToTop(index - 1, -20)">
-					{{ index - 1 }}
+					@click="scrollToTop(i, -20)">
+					<div
+						class="smallTransparent"
+						:style="{
+							display: selectedIndex === i ? 'none' : 'flex',
+						}">
+						{{ item }}
+					</div>
 				</div>
 			</div>
 			<div
@@ -23,24 +29,102 @@
 				ref="selectedContainer"
 				@scroll="handleBigSelectedScroll">
 				<div
-					v-for="(index, i) in loopCount"
+					v-for="(item, i) in items"
 					:key="i"
 					class="BigSelected">
-					{{ index - 1 }}
+					<div style="font-size: 2em; height: 2em">{{ item }}</div>
+					<div class="BigSelectedImg"></div>
+					<div
+						style="
+							height: 330px;
+							width: 100%;
+							margin-top: 10px;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-around;
+						">
+						<div
+							style="
+								height: 100px;
+								width: 100%;
+								display: flex;
+								justify-content: space-evenly;
+								align-items: center;
+							">
+							<div
+								v-for="i in 3"
+								style="
+									display: flex;
+									flex-direction: column;
+									align-items: center;
+								">
+								<img
+									src="../assets/lv.png"
+									style="height: 100px" />
+								<P style="font-size: 11px">LV FLORAGRAM 手链</P>
+								<p
+									style="
+										font-size: 10px;
+										color: #9d9d9d;
+										margin: 0;
+									">
+									$200
+								</p>
+							</div>
+						</div>
+						<div
+							style="
+								height: 100px;
+								width: 100%;
+								display: flex;
+								justify-content: space-evenly;
+								align-items: center;
+							">
+							<div
+								v-for="i in 3"
+								style="
+									display: flex;
+									flex-direction: column;
+									align-items: center;
+								">
+								<img
+									src="../assets/lv.png"
+									style="height: 100px" />
+								<P style="font-size: 11px">LV FLORAGRAM 手链</P>
+								<p
+									style="
+										font-size: 10px;
+										color: #9d9d9d;
+										margin: 0;
+									">
+									$200
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
-
 <script>
 	export default {
 		name: 'SelectedComponent',
 		data() {
 			return {
-				loopCount: 8,
-				selectedIndex: null,
+				selectedIndex: 0,
 				isScrolling: false,
+				items: [
+					'为她甄选',
+					'为他甄选',
+					'Vivienne Holidays 系列',
+					'2024 女士SKI系列',
+					'2024 男士SKI系列',
+					'时尚点缀',
+					'精选香氛',
+					'旅行灵感',
+					'智能系列',
+				],
 			};
 		},
 		methods: {
@@ -98,7 +182,6 @@
 			},
 			handleBigSelectedScroll(event) {
 				if (this.isScrolling) return;
-				console.log('在滚动');
 				const selected = this.$refs.selectedContainer;
 				const bigSelectedElements =
 					selected.querySelectorAll('.BigSelected');
@@ -119,9 +202,6 @@
 				}
 
 				if (visibleTopIndex !== null) {
-					console.log(
-						`当前显示的最上方的大选择项是第 ${visibleTopIndex} 个`
-					);
 					this.scrollSmallSelectedToTop(visibleTopIndex);
 				}
 			},
@@ -147,6 +227,8 @@
 					}
 				};
 				requestAnimationFrame(animateScroll);
+
+				this.selectedIndex = index;
 			},
 		},
 	};
@@ -154,7 +236,8 @@
 
 <style scoped>
 	.Selected {
-		height: calc(100vh - 256px);
+		height: calc(100vh - 266px);
+		width: calc(100vw - 10px);
 		padding: 0 5px;
 		overflow-y: auto;
 		scrollbar-width: none;
@@ -180,11 +263,34 @@
 	}
 
 	.BigSelected {
-		height: 500px;
-		background-image: url(../assets/lv.png);
+		height: 800px;
+		width: 100%;
 		margin-top: 5px;
+		border-radius: 5px;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.BigSelectedImg {
+		height: 300px;
+		width: 100%;
+		background-image: url(../assets/lv.png);
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
-		border-radius: 5px;
+	}
+
+	/* 透明灰夹层 */
+	.smallTransparent {
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		font-size: 0.8em;
 	}
 </style>
