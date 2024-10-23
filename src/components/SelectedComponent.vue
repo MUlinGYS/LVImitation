@@ -101,7 +101,7 @@
 </script>
 <style scoped>
 	.Selected {
-		height: calc(100vh - 252px);
+		height: calc(100vh - 256px);
 		padding: 0 5px;
 		overflow-y: auto;
 		scrollbar-width: none;
