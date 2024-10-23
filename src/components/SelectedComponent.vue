@@ -20,18 +20,19 @@
 			</div>
 			<div
 				class="Selected"
-				ref="selectedContainer">
+				ref="selectedContainer"
+				@scroll="handleBigSelectedScroll">
 				<div
 					v-for="(index, i) in loopCount"
 					:key="i"
-					class="BigSelected"
-					@scroll="handleBigSelectedScroll(index - 1, i)">
+					class="BigSelected">
 					{{ index - 1 }}
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
+
 <script>
 	export default {
 		name: 'SelectedComponent',
@@ -39,10 +40,13 @@
 			return {
 				loopCount: 8,
 				selectedIndex: null,
+				isScrolling: false,
 			};
 		},
 		methods: {
 			scrollToTop(index, leftAdjustment) {
+				this.isScrolling = true;
+
 				const smallSelectedBox =
 					this.$el.querySelector('.smallSelectedBox');
 				const smallSelected =
@@ -53,7 +57,7 @@
 				const duration = 500;
 				let startTime = null;
 
-				function animateScroll(timestamp) {
+				const animateScroll = (timestamp) => {
 					if (!startTime) startTime = timestamp;
 					const elapsed = timestamp - startTime;
 					const progress = Math.min(elapsed / duration, 1);
@@ -61,8 +65,10 @@
 						startScrollLeft + distance * progress;
 					if (elapsed < duration) {
 						requestAnimationFrame(animateScroll);
+					} else {
+						this.isScrolling = false;
 					}
-				}
+				};
 				requestAnimationFrame(animateScroll);
 
 				const selected = this.$refs.selectedContainer;
@@ -73,7 +79,7 @@
 				let currentScrollTop = selected.scrollTop;
 				startTime = null;
 
-				function animateBigScroll(timestamp) {
+				const animateBigScroll = (timestamp) => {
 					if (!startTime) startTime = timestamp;
 					const elapsed = timestamp - startTime;
 					const progress = Math.min(elapsed / duration, 1);
@@ -82,23 +88,70 @@
 						(targetScrollTop - currentScrollTop) * progress;
 					if (elapsed < duration) {
 						requestAnimationFrame(animateBigScroll);
+					} else {
+						this.isScrolling = false;
 					}
-				}
+				};
 				requestAnimationFrame(animateBigScroll);
 
 				this.selectedIndex = index;
 			},
-			handleBigSelectedScroll(index, i) {
-				const selected = this.$el.querySelector('.Selected');
-				const bigSelected =
-					selected.querySelectorAll('.BigSelected')[i];
-				if (bigSelected.getBoundingClientRect().top <= 0) {
-					this.scrollToTop(index);
+			handleBigSelectedScroll(event) {
+				if (this.isScrolling) return;
+				console.log('在滚动');
+				const selected = this.$refs.selectedContainer;
+				const bigSelectedElements =
+					selected.querySelectorAll('.BigSelected');
+				const containerScrollTop = selected.scrollTop;
+
+				let visibleTopIndex = null;
+				for (let j = 0; j < bigSelectedElements.length; j++) {
+					const bigSelected = bigSelectedElements[j];
+					const elementTop = bigSelected.offsetTop;
+					if (
+						elementTop >= containerScrollTop &&
+						(visibleTopIndex === null ||
+							elementTop <
+								bigSelectedElements[visibleTopIndex].offsetTop)
+					) {
+						visibleTopIndex = j;
+					}
 				}
+
+				if (visibleTopIndex !== null) {
+					console.log(
+						`当前显示的最上方的大选择项是第 ${visibleTopIndex} 个`
+					);
+					this.scrollSmallSelectedToTop(visibleTopIndex);
+				}
+			},
+			scrollSmallSelectedToTop(index) {
+				const smallSelectedBox =
+					this.$el.querySelector('.smallSelectedBox');
+				const smallSelected =
+					smallSelectedBox.querySelectorAll('.smallSelected')[index];
+				const startScrollLeft = smallSelectedBox.scrollLeft;
+				const distance =
+					smallSelected.offsetLeft - startScrollLeft - 20;
+				const duration = 500;
+				let startTime = null;
+
+				const animateScroll = (timestamp) => {
+					if (!startTime) startTime = timestamp;
+					const elapsed = timestamp - startTime;
+					const progress = Math.min(elapsed / duration, 1);
+					smallSelectedBox.scrollLeft =
+						startScrollLeft + distance * progress;
+					if (elapsed < duration) {
+						requestAnimationFrame(animateScroll);
+					}
+				};
+				requestAnimationFrame(animateScroll);
 			},
 		},
 	};
 </script>
+
 <style scoped>
 	.Selected {
 		height: calc(100vh - 256px);
