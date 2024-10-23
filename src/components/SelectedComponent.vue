@@ -102,6 +102,11 @@
 							</div>
 						</div>
 					</div>
+					<el-button
+						round
+						style="margin-top: 15px"
+						>查看全部</el-button
+					>
 				</div>
 			</div>
 		</div>
@@ -263,7 +268,7 @@
 	}
 
 	.BigSelected {
-		height: 800px;
+		height: 770px;
 		width: 100%;
 		margin-top: 5px;
 		border-radius: 5px;
