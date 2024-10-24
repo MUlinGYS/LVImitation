@@ -7,11 +7,12 @@
 				justify-content: space-around;
 				padding: 20px;
 			">
-			<div>
+			<!-- LOGO -->
+			<!-- <div>
 				<i
 					class="el-icon-s-help"
 					style="font-size: 30px; margin-top: 2px"></i>
-			</div>
+			</div> -->
 			<div style="width: 75vw">
 				<el-input
 					size="mini"

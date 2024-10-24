@@ -32,7 +32,9 @@
 					v-for="(item, i) in items"
 					:key="i"
 					class="BigSelected">
-					<div style="font-size: 2em; height: 2em">{{ item }}</div>
+					<div style="font-size: 1.5em; height: 2em">
+						{{ item }}
+					</div>
 					<div class="BigSelectedImg"></div>
 					<div
 						style="
@@ -61,7 +63,7 @@
 								<img
 									src="../assets/lv.png"
 									style="height: 100px" />
-								<P style="font-size: 11px">LV FLORAGRAM 手链</P>
+								<P class="text-ellipsis">LV FLORAGRAM 手链</P>
 								<p
 									style="
 										font-size: 10px;
@@ -90,7 +92,7 @@
 								<img
 									src="../assets/lv.png"
 									style="height: 100px" />
-								<P style="font-size: 11px">LV FLORAGRAM 手链</P>
+								<P class="text-ellipsis">LV FLORAGRAM 手链</P>
 								<p
 									style="
 										font-size: 10px;
@@ -104,9 +106,20 @@
 					</div>
 					<el-button
 						round
-						style="margin-top: 15px"
-						>查看全部</el-button
-					>
+						style="
+							margin-top: 15px;
+							display: flex;
+							justify-content: center;
+							height: 45px;
+							align-items: center;
+							width: 160px;
+							color: black;
+						"
+						class="custom-button"
+						>查看全部<span
+							style="margin-left: 5px"
+							class="el-icon-arrow-right"></span
+					></el-button>
 				</div>
 			</div>
 		</div>
@@ -114,7 +127,7 @@
 </template>
 <script>
 	export default {
-		name: 'LifeComponent',
+		name: 'SelectedComponent',
 		data() {
 			return {
 				selectedIndex: 0,
@@ -296,6 +309,23 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-		font-size: 0.8em;
+		font-size: 0.66em;
+		border-radius: 5px;
+	}
+
+	.custom-button.el-icon-arrow-right {
+		align-self: center;
+	}
+
+	.el-button.is-round {
+		border-radius: 25px;
+	}
+
+	.text-ellipsis {
+		font-size: 11px;
+		width: 110px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>
