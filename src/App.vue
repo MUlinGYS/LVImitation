@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<el-container>
-			<el-main style="height: calc(100vh - 40px); padding: 0">
+			<el-main style="height: calc(100vh - 50px); padding: 0">
 				<component :is="currentComponent"></component>
 			</el-main>
 			<el-footer style="height: 39px">
@@ -35,8 +35,15 @@
 	import Home from '../src/views/Home.vue';
 	import Discovery from '../src/views/Discovery.vue';
 	import Guide from '../src/views/Guide.vue';
+	import detail from './views/detail.vue';
+	import test from './views/test.vue';
+
+	// 第三方库加速加载字体并进行相应的控制
+	import WebFont from 'webfontloader';
 
 	export default {
+		name: 'App',
+
 		data() {
 			return {
 				activeIndex: '1',
@@ -44,6 +51,8 @@
 					1: Home,
 					2: Discovery,
 					3: Guide,
+					4: detail,
+					5: test,
 				},
 			};
 		},
@@ -52,20 +61,39 @@
 				return this.components[this.activeIndex];
 			},
 		},
+		created() {},
+		components: {
+			Home,
+			Discovery,
+			Guide,
+			detail,
+			test,
+		},
 		methods: {
 			handleSelect(index) {
 				this.activeIndex = index;
 			},
 		},
-		components: {
-			Home,
-			Discovery,
-			Guide,
+		mounted() {
+			// 加速字体加载
+			WebFont.load({
+				custom: {
+					families: ['huipian'],
+					urls: ['../src/assets/fonts/极影毁片文宋-v1.00.ttf'],
+				},
+				// 当字体加载完成时的回调函数
+				active: function () {
+					console.log('字体加载完成');
+				},
+			});
 		},
 	};
 </script>
 
-<style scoped>
+<style>
+	body {
+		font-family: 'huipian';
+	}
 	#app {
 		margin: 0;
 		height: 100vh;
@@ -97,5 +125,9 @@
 
 	li {
 		height: 39px !important;
+	}
+
+	.el-footer {
+		padding-top: 10px !important;
 	}
 </style>

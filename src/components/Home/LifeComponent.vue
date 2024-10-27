@@ -28,17 +28,14 @@
 				class="Selected"
 				ref="selectedContainer"
 				@scroll="handleBigSelectedScroll">
-				<div
-					v-for="(item, i) in items"
-					:key="i"
-					class="BigSelected">
+				<div v-for="(item, i) in items" :key="i" class="BigSelected">
 					<div style="font-size: 1.5em; height: 2em">
 						{{ item }}
 					</div>
 					<div class="BigSelectedImg"></div>
 					<div
 						style="
-							height: 330px;
+							height: 100px;
 							width: 100%;
 							margin-top: 10px;
 							display: flex;
@@ -52,74 +49,49 @@
 								display: flex;
 								justify-content: space-evenly;
 								align-items: center;
+								flex-wrap: wrap;
 							">
 							<div
-								v-for="i in 3"
+								v-for="i in 6"
+								:key="i"
 								style="
 									display: flex;
 									flex-direction: column;
 									align-items: center;
+									width: 32%; /* 调整宽度以适应6个元素 */
+									box-sizing: border-box;
 								">
 								<img
-									src="../assets/lv.png"
+									src="../../assets/lv.png"
 									style="height: 100px" />
 								<P class="text-ellipsis">LV FLORAGRAM 手链</P>
 								<p
 									style="
+										margin: 5px;
 										font-size: 10px;
 										color: #9d9d9d;
-										margin: 0;
 									">
 									$200
 								</p>
 							</div>
-						</div>
-						<div
-							style="
-								height: 100px;
-								width: 100%;
-								display: flex;
-								justify-content: space-evenly;
-								align-items: center;
-							">
-							<div
-								v-for="i in 3"
+							<el-button
+								round
 								style="
+									margin-top: 26px;
 									display: flex;
-									flex-direction: column;
+									justify-content: center;
+									height: 45px;
 									align-items: center;
-								">
-								<img
-									src="../assets/lv.png"
-									style="height: 100px" />
-								<P class="text-ellipsis">LV FLORAGRAM 手链</P>
-								<p
-									style="
-										font-size: 10px;
-										color: #9d9d9d;
-										margin: 0;
-									">
-									$200
-								</p>
-							</div>
+									width: 160px;
+									color: black;
+								"
+								class="custom-button"
+								>查看全部<span
+									style="margin-left: 5px"
+									class="el-icon-arrow-right"></span
+							></el-button>
 						</div>
 					</div>
-					<el-button
-						round
-						style="
-							margin-top: 15px;
-							display: flex;
-							justify-content: center;
-							height: 45px;
-							align-items: center;
-							width: 160px;
-							color: black;
-						"
-						class="custom-button"
-						>查看全部<span
-							style="margin-left: 5px"
-							class="el-icon-arrow-right"></span
-					></el-button>
 				</div>
 			</div>
 		</div>
@@ -270,7 +242,7 @@
 		width: 70px;
 		min-width: 70px;
 		margin-left: 15px;
-		background-image: url(../assets/lv.png);
+		background-image: url(../../assets/lv.png);
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 		border-radius: 5px;
@@ -281,7 +253,7 @@
 	}
 
 	.BigSelected {
-		height: 770px;
+		height: 750px;
 		width: 100%;
 		margin-top: 5px;
 		border-radius: 5px;
@@ -294,7 +266,7 @@
 	.BigSelectedImg {
 		height: 300px;
 		width: 100%;
-		background-image: url(../assets/lv.png);
+		background-image: url(../../assets/lv.png);
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
 	}
@@ -322,8 +294,10 @@
 	}
 
 	.text-ellipsis {
+		margin-top: 10px;
 		font-size: 11px;
-		width: 110px;
+		width: 100%;
+		text-align: center;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
