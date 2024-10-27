@@ -1,13 +1,13 @@
-const proxySite = 'http://192.168.31.209:8080/seeyon'
+const proxySite = 'https://test.eonet.cc/index'
 
 module.exports = {
 
     proxy: {
-        '/seeyon': {
+        '/index': {
             target: proxySite,
             changeOrigin: true,
             pathRewrite: {
-                '^/seeyon': ''
+                '^/index': ''
             }
         },
     },

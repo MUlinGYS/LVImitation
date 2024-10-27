@@ -1,54 +1,72 @@
 <template>
 	<div>
 		<Input></Input>
-
 		<el-tabs
 			style="max-width: 100vw"
 			v-model="activeName"
 			@tab-click="handleClick">
-			<el-tab-pane label="甄选" name="first">
-				<selected-component></selected-component>
-			</el-tab-pane>
-			<el-tab-pane label="女士" name="second">
-				<ladies-component></ladies-component>
-			</el-tab-pane>
-			<el-tab-pane label="男士" name="third">
-				<men-component></men-component>
-			</el-tab-pane>
-			<el-tab-pane label="生活" name="fourth">
-				<life-component></life-component>
+			<!-- 循环动态生成 el-tab-pane -->
+			<el-tab-pane
+				v-for="(item, index) in titleData"
+				:key="index"
+				:label="item"
+				:name="'tab' + index">
+				<!-- 传入对应标签名称 -->
+				<Homeomponent :tab-name="item"></Homeomponent>
 			</el-tab-pane>
 		</el-tabs>
 	</div>
 </template>
+
 <script>
-	import SelectedComponent from '../components/Home/SelectedComponent.vue';
-	import LadiesComponent from '../components/Home/LadiesComponent.vue';
-	import MenComponent from '../components/Home/MenComponent.vue';
-	import LifeComponent from '../components/Home/LifeComponent.vue';
+	import axios from 'axios';
+	// import SelectedComponent from '../components/Home/SelectedComponent.vue';
+	// import LadiesComponent from '../components/Home/LadiesComponent.vue';
+	// import MenComponent from '../components/Home/MenComponent.vue';
+	// import LifeComponent from '../components/Home/LifeComponent.vue';
+	import Homeomponent from '../components/Home/Homeponent.vue';
 	import Input from '../components/input.vue';
 
 	export default {
 		components: {
-			SelectedComponent,
-			LadiesComponent,
-			MenComponent,
-			LifeComponent,
+			// SelectedComponent,
+			// LadiesComponent,
+			// MenComponent,
+			// LifeComponent,
+			Homeomponent,
 			Input,
 		},
 		data() {
 			return {
 				input: '',
-				activeName: 'first',
+				activeName: 'tab0',
+				titleData: null,
 			};
+		},
+		created() {
+			this.sendPostRequest();
 		},
 		methods: {
 			handleClick(tab) {
-				console.log(tab);
+				// console.log(this.titleData);
+			},
+			async sendPostRequest() {
+				try {
+					const response = await axios.post('/index/home', {
+						data: {},
+					});
+					const titles = response.data.data.map((item) => item.title);
+					this.titleData = titles;
+					return this.titleData;
+				} catch (error) {
+					// console.error(error);
+					return null;
+				}
 			},
 		},
 	};
 </script>
+
 <style>
 	.el-input__icon {
 		font-size: 15px !important;

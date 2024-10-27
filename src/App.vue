@@ -19,12 +19,12 @@
 					<el-menu-item index="3">
 						<i class="el-icon-s-claim"><p>甄礼指南</p></i>
 					</el-menu-item>
-					<el-menu-item index="4">
+					<!-- <el-menu-item index="4">
 						<i class="el-icon-suitcase-1"><p>购物袋</p></i>
 					</el-menu-item>
 					<el-menu-item index="5">
 						<i class="el-icon-user"><p>我的</p></i>
-					</el-menu-item>
+					</el-menu-item> -->
 				</el-menu>
 			</el-footer>
 		</el-container>

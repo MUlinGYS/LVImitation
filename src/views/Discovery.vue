@@ -10,13 +10,13 @@
 					<LadiesAudition
 						:key="
 							activeName === 'first' ? 'ladies' : 'ladies-unique'
-						"></LadiesAudition>
+						"
+						:labels="0"></LadiesAudition>
 				</el-tab-pane>
 				<el-tab-pane label="男士甄选" name="second">
 					<MensSelection
-						:key="
-							activeName === 'second' ? 'mens' : 'mens-unique'
-						"></MensSelection>
+						:key="activeName === 'second' ? 'mens' : 'mens-unique'"
+						:labels="1"></MensSelection>
 				</el-tab-pane>
 			</el-tabs>
 		</div>

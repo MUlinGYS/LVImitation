@@ -218,7 +218,7 @@
 		position: absolute; /* 使用绝对定位 */
 		bottom: 0;
 		right: 20px;
-		letter-spacing: -6px;
+		letter-spacing: -3px;
 		margin: 10px; /* 可以根据需要调整边距 */
 		color: black; /* 文字颜色，可以根据需要调整 */
 		font-size: 1.3rem; /* 文字大小，可以根据需要调整 */

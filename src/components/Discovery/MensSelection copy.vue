@@ -18,10 +18,7 @@
 		</div>
 		<div>
 			<el-tabs :tab-position="tabPosition" style="height: 200px">
-				<el-tab-pane
-					v-for="(list, listIndex) in lists"
-					:key="list.id"
-					:label="list.title">
+				<el-tab-pane label="新品系列">
 					<div
 						ref="parentDiv"
 						class="parent-div"
@@ -34,58 +31,60 @@
 							align-content: space-between;
 						">
 						<div
-							v-for="(innerItem, innerIndex) in list.child || []"
-							:key="innerIndex"
-							style="width: 30vw; height: 28%; padding: 5px 10px">
+							v-for="(box, index) in 10"
+							:key="index"
+							:style="{
+								width: boxWidth + 'px',
+								height: boxWidth + 30 + 'px',
+								marginTop: '5px',
+								marginBottom: '5px',
+							}">
 							<div
 								class="commodityImg"
 								:style="{
-									backgroundImage: `url(${innerItem.icon})`,
+									width: boxWidth + 'px',
+									height: boxWidth + 'px',
 								}"></div>
 							<p style="margin: 5px; text-align: center">
-								{{ innerItem.title }}
+								SLENDER 钱夹
 							</p>
 						</div>
 					</div>
 				</el-tab-pane>
+				<el-tab-pane label="甄礼之选">甄礼之选</el-tab-pane>
+				<el-tab-pane label="时尚包袋">时尚包袋</el-tab-pane>
+				<el-tab-pane label="小型皮具">小型皮具</el-tab-pane>
 			</el-tabs>
 		</div>
 	</div>
 </template>
 
 <script>
-	import axios from 'axios';
 	export default {
-		props: ['labels'],
 		name: 'MensSelection',
 		data() {
 			return {
 				tabPosition: 'left',
-				lists: [],
+				parentWidth: 0,
 			};
 		},
-		computed: {},
-		created() {
-			this.sendPostRequest();
+		computed: {
+			boxWidth() {
+				return (this.parentWidth - 10) / 2 - 20; // 减去左右间距
+			},
+		},
+		mounted() {
+			this.$nextTick(() => {
+				this.updateParentWidth();
+			});
+			window.addEventListener('resize', this.updateParentWidth);
+		},
+		beforeDestroy() {
+			window.removeEventListener('resize', this.updateParentWidth);
 		},
 		methods: {
 			updateParentWidth() {
-				if (this.$refs.parentDiv) {
-					this.parentWidth = this.$refs.parentDiv.clientWidth;
-				}
-			},
-			async sendPostRequest() {
-				try {
-					const response = await axios.post('/index/category', {
-						data: {
-							labels: this.labels,
-						},
-					});
-					const data = response.data.data;
-					this.lists = data;
-				} catch (error) {
-					console.error(error);
-				}
+				this.parentWidth = this.$refs.parentDiv.clientWidth;
 			},
 		},
 	};
@@ -108,10 +107,8 @@
 		font-size: 2rem;
 	}
 	.commodityImg {
-		width: 100%;
-		height: 100%;
-		background-size: contain; /* 保持图片的原始比例并使其完全适合容器 */
-		background-position: center; /* 将背景图像居中 */
+		background-image: url('../../assets/lv.png');
+		background-size: 100% 100%;
 		background-repeat: no-repeat;
 	}
 	.ladies-audition >>> .el-tabs__item {

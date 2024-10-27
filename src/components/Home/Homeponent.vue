@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
 	<div>
 		<div class="wrapper">
 			<div
@@ -14,13 +14,16 @@
 					v-for="(item, i) in items"
 					:key="i"
 					class="smallSelected"
+					:style="{
+						backgroundImage: `url(${item.icon})`,
+					}"
 					@click="scrollToTop(i, -20)">
 					<div
 						class="smallTransparent"
 						:style="{
 							display: selectedIndex === i ? 'none' : 'flex',
 						}">
-						{{ item }}
+						{{ item.title }}
 					</div>
 				</div>
 			</div>
@@ -28,23 +31,41 @@
 				class="Selected"
 				ref="selectedContainer"
 				@scroll="handleBigSelectedScroll">
-				<div v-for="(item, i) in items" :key="i" class="BigSelected">
-					<div style="font-size: 1.5em; height: 2em">
-						{{ item }}
+				<div
+					v-for="(item, outerIndex) in items"
+					:key="outerIndex"
+					class="BigSelected">
+					<div>
+						<p
+							style="
+								font-size: 1.5em;
+								height: auto;
+								padding: 0.5rem 0;
+								word-break: break-all;
+							">
+							{{ item.title }}
+						</p>
 					</div>
-					<div class="BigSelectedImg"></div>
+					<div
+						class="BigSelectedImg"
+						:style="{
+							backgroundImage: `url(${item.banner})`,
+						}"></div>
 					<div
 						style="
-							height: 100px;
+							height: auto;
+							min-height: 100px;
 							width: 100%;
 							margin-top: 10px;
 							display: flex;
 							flex-direction: column;
 							justify-content: space-around;
+							align-items: center;
 						">
 						<div
 							style="
-								height: 100px;
+								height: auto;
+								min-height: 100px;
 								width: 100%;
 								display: flex;
 								justify-content: space-evenly;
@@ -52,19 +73,31 @@
 								flex-wrap: wrap;
 							">
 							<div
-								v-for="i in 6"
-								:key="i"
+								v-for="(
+									innerItem, innerIndex
+								) in item.product || []"
+								:key="innerIndex"
 								style="
 									display: flex;
 									flex-direction: column;
 									align-items: center;
-									width: 32%; /* 调整宽度以适应6个元素 */
+									width: 32%;
 									box-sizing: border-box;
 								">
 								<img
-									src="../../assets/lv.png"
-									style="height: 100px" />
-								<P class="text-ellipsis">LV FLORAGRAM 手链</P>
+									:style="{
+										backgroundImage: `url(${innerItem.img})`,
+									}"
+									style="
+										height: 100px;
+										width: 100%;
+										background-size: cover;
+										background-repeat: no-repeat;
+										object-fit: contain;
+									" />
+								<p class="text-ellipsis">
+									{{ innerItem.title }}
+								</p>
 								<p
 									style="
 										margin: 5px;
@@ -74,48 +107,45 @@
 									$200
 								</p>
 							</div>
-							<el-button
-								round
-								style="
-									margin-top: 26px;
-									display: flex;
-									justify-content: center;
-									height: 45px;
-									align-items: center;
-									width: 160px;
-									color: black;
-								"
-								class="custom-button"
-								>查看全部<span
-									style="margin-left: 5px"
-									class="el-icon-arrow-right"></span
-							></el-button>
 						</div>
+						<el-button
+							round
+							style="
+								margin-top: 26px;
+								display: flex;
+								justify-content: center;
+								height: 45px;
+								align-items: center;
+								width: 160px;
+								color: black;
+							"
+							class="custom-button"
+							>查看全部<span
+								style="margin-left: 5px"
+								class="el-icon-arrow-right"></span
+						></el-button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
+
 <script>
+	import axios from 'axios';
 	export default {
-		name: 'SelectedComponent',
+		name: 'Homeponent',
+		props: ['tabName'],
 		data() {
 			return {
 				selectedIndex: 0,
 				isScrolling: false,
-				items: [
-					'为她甄选',
-					'为他甄选',
-					'Vivienne Holidays 系列',
-					'2024 女士 SKI 系列',
-					'2024 男士 SKI 系列',
-					'时尚点缀',
-					'精选香氛',
-					'旅行灵感',
-					'智能系列',
-				],
+				items: [],
+				// product: [],
 			};
+		},
+		created() {
+			this.sendPostRequest();
 		},
 		methods: {
 			scrollToTop(index, leftAdjustment) {
@@ -220,6 +250,27 @@
 
 				this.selectedIndex = index;
 			},
+			async sendPostRequest() {
+				try {
+					const response = await axios.post('/index/home', {
+						data: {},
+					});
+					const titles = response.data.data;
+					const foundItem = titles.find(
+						(item) => item.title === this.tabName
+					);
+					if (foundItem) {
+						this.items = foundItem.child;
+						// console.log(this.items);
+						// this.product = foundItem.child.map(
+						// 	(childItem) => childItem.child || []
+						// );
+						this.$nextTick(() => {});
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			},
 		},
 	};
 </script>
@@ -268,7 +319,9 @@
 		width: 100%;
 		background-image: url(../../assets/lv.png);
 		background-size: 100% 100%;
+		background-size: cover;
 		background-repeat: no-repeat;
+		object-fit: contain;
 	}
 
 	/* 透明灰夹层 */
@@ -302,4 +355,4 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-</style> -->
+</style>
