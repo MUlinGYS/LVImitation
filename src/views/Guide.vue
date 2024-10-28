@@ -174,11 +174,11 @@
 					.then((response) => response.json())
 					.then((data) => {
 						if (data.status === 1 && data.data) {
-							// 更新 menu 数据，将接口数据转换为组件所需的结构
+							
 							this.menu = data.data.map((item) => ({
 								id: item.id,
 								name: item.title,
-								product: item.product || [], // 确保 product 是一个数组，如果不存在则为空数组
+								product: item.product || [], 
 								imgPath: item.banner || null,
 							}));
 							// 更新相关依赖数据

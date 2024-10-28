@@ -9,10 +9,12 @@
 			<el-tab-pane
 				v-for="(item, index) in titleData"
 				:key="index"
-				:label="item"
-				:name="'tab' + index">
+				:label="item.title"
+				:name="'tab' + index"
+				:tab-id="item.id">
+				<!-- 这里添加了 tab-id 属性 -->
 				<!-- 传入对应标签名称 -->
-				<Homeomponent :tab-name="item"></Homeomponent>
+				<Homeomponent :tab-data="item"></Homeomponent>
 			</el-tab-pane>
 		</el-tabs>
 	</div>
@@ -20,19 +22,11 @@
 
 <script>
 	import axios from 'axios';
-	// import SelectedComponent from '../components/Home/SelectedComponent.vue';
-	// import LadiesComponent from '../components/Home/LadiesComponent.vue';
-	// import MenComponent from '../components/Home/MenComponent.vue';
-	// import LifeComponent from '../components/Home/LifeComponent.vue';
 	import Homeomponent from '../components/Home/Homeponent.vue';
 	import Input from '../components/input.vue';
 
 	export default {
 		components: {
-			// SelectedComponent,
-			// LadiesComponent,
-			// MenComponent,
-			// LifeComponent,
 			Homeomponent,
 			Input,
 		},
@@ -55,8 +49,11 @@
 					const response = await axios.post('/index/home', {
 						data: {},
 					});
-					const titles = response.data.data.map((item) => item.title);
-					this.titleData = titles;
+					const dataWithId = response.data.data.map((item) => ({
+						title: item.title,
+						id: item.id,
+					}));
+					this.titleData = dataWithId;
 					return this.titleData;
 				} catch (error) {
 					// console.error(error);

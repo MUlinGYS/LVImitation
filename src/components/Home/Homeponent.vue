@@ -119,11 +119,13 @@
 								width: 160px;
 								color: black;
 							"
-							class="custom-button"
-							>查看全部<span
+							:id="item.id"
+							@click="HomeponentID(item.id)"
+							class="custom-button">
+							查看全部<span
 								style="margin-left: 5px"
-								class="el-icon-arrow-right"></span
-						></el-button>
+								class="el-icon-arrow-right"></span>
+						</el-button>
 					</div>
 				</div>
 			</div>
@@ -133,9 +135,10 @@
 
 <script>
 	import axios from 'axios';
+	import { mapActions } from 'vuex';
 	export default {
 		name: 'Homeponent',
-		props: ['tabName'],
+		props: ['tabData'],
 		data() {
 			return {
 				selectedIndex: 0,
@@ -145,6 +148,8 @@
 			};
 		},
 		created() {
+			// 在组件创建时将 guide 设置为 false
+			this.$store.commit('ladiesAudition/setGuideFalse');
 			this.sendPostRequest();
 		},
 		methods: {
@@ -250,6 +255,14 @@
 
 				this.selectedIndex = index;
 			},
+			...mapActions('ladiesAudition', ['setItemAndListId']),
+			HomeponentID(itemid, Guide = true) {
+				const itemId = itemid;
+				const listId = this.tabData.id;
+				console.log(itemId, listId);
+
+				this.setItemAndListId({ itemId, listId, guide: Guide });
+			},
 			async sendPostRequest() {
 				try {
 					const response = await axios.post('/index/home', {
@@ -257,11 +270,12 @@
 					});
 					const titles = response.data.data;
 					const foundItem = titles.find(
-						(item) => item.title === this.tabName
+						(item) => item.title === this.tabData.title
 					);
 					if (foundItem) {
 						this.items = foundItem.child;
-						// console.log(this.items);
+						console.log(this.items);
+
 						// this.product = foundItem.child.map(
 						// 	(childItem) => childItem.child || []
 						// );

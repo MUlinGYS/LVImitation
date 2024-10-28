@@ -5,7 +5,7 @@ import axios from 'axios'
 var qs = require('qs');
 const service = axios.create({
 	// 公共接口--这里注意后面会讲
-	baseURL: "",
+	baseURL: "https://test.eonet.cc/index",
 	// 超时时间 单位是ms，这里设置了3s的超时时间
 	timeout: 100 * 1000,
 	withCredentials: true

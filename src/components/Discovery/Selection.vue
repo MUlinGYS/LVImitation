@@ -41,7 +41,7 @@
 						<div
 							v-for="(innerItem, innerIndex) in list.child || []"
 							:key="innerIndex"
-							@click="vuexID(innerItem, listIndex)"
+							@click="SelectionID(innerItem, listIndex)"
 							style="width: 30vw; height: 36%; padding: 5px 10px">
 							<div
 								class="commodityImg"
@@ -106,7 +106,7 @@
 				this.activeTitle = tab.label;
 			},
 			...mapActions('ladiesAudition', ['setItemAndListId']),
-			vuexID(innerItem, listIndex, Guide = true) {
+			SelectionID(innerItem, listIndex, Guide = true) {
 				const itemId = innerItem.id;
 				const listId = this.lists[listIndex].id;
 				this.setItemAndListId({ itemId, listId, guide: Guide });
