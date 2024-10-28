@@ -15,7 +15,7 @@ const ladiesAuditionModule = {
     // 重置 guide guide 状态与 detail 通用
     setGuideFalse(state) {
       state.guide = null;
-      console.log('更新后的 guide 值：', state.guide);
+      // console.log('更新后的 guide 值：', state.guide);
     },
     SETITEMANDLISTID(state, payload) {
       state.itemId = payload.itemId;
@@ -25,8 +25,8 @@ const ladiesAuditionModule = {
     COMMODITYID(state, id) {
       state.commodityID = id.commodityID;
       state.guide = id.guide;
-      console.log('guide', id.guide);
-      console.log('commodityID', state.commodityID);
+      // console.log('guide', id.guide);
+      // console.log('commodityID', state.commodityID);
     }
   },
   actions: {

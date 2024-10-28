@@ -97,6 +97,15 @@
 	}
 
 	.el-tabs__item {
-		padding: 0 30px !important;
+		padding: 0 20px !important;
+	}
+
+	.el-tabs__header {
+		position: sticky !important;
+		/* 新属性sticky */
+		top: 0;
+		background-color: white;
+		z-index: 10;
+		/* 距离页面顶部距离 */
 	}
 </style>

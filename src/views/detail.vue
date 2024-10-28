@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div style="
-				height: 630px;
+				height: 575px;
 				position: relative; /* 确保子元素可以相对于此容器定位 */
 			">
-			<el-carousel ref="carousel" :loop="true" :autoplay="true" height="600px" indicator-position="none"
+			<el-carousel ref="carousel" :loop="true" :autoplay="true" height="570px" indicator-position="none"
 				@change="onCarouselChange">
 				<el-carousel-item v-for="(item, index) in menu" :key="index">
 					<div class="image-container">
@@ -201,7 +201,7 @@ export default {
 
 .image-container {
 	width: 100%;
-	height: 90%;
+	height: 80%;
 	padding: 20px 0;
 	display: flex;
 	justify-content: center;

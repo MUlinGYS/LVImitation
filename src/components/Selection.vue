@@ -42,7 +42,7 @@
 							v-for="(innerItem, innerIndex) in list.child || []"
 							:key="innerIndex"
 							@click="SelectionID(innerItem, listIndex)"
-							style="width: 30vw; height: 36%; padding: 5px 10px">
+							style="width: 40%; height: 36%; padding: 5px 10px">
 							<div
 								class="commodityImg"
 								:style="{
@@ -112,11 +112,16 @@
 				this.ItemidAndListid({ itemId, listId, guide: Guide });
 			},
 		},
+		mounted() {
+			this.pageHeight = window.innerHeight;
+			document.querySelector('.ladies-audition').style.height =
+				this.pageHeight - 200 + 'px';
+		},
 	};
 </script>
 <style scoped>
 	.ladies-audition {
-		height: calc(100vh - 118px);
+		height: auto;
 		padding: 0 10px;
 	}
 	.ladies-audition-img {
