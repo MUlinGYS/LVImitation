@@ -75,7 +75,7 @@
 		},
 		computed: {},
 		created() {
-			// 在组件创建时将 guide 设置为 false
+			// 在组件创建时将 guide 设置为 null
 			this.$store.commit('ladiesAudition/setGuideFalse');
 			this.sendPostRequest();
 		},
@@ -105,11 +105,11 @@
 			onTabClick(tab) {
 				this.activeTitle = tab.label;
 			},
-			...mapActions('ladiesAudition', ['setItemAndListId']),
-			SelectionID(innerItem, listIndex, Guide = true) {
+			...mapActions('ladiesAudition', ['ItemidAndListid']),
+			SelectionID(innerItem, listIndex, Guide = 2) {
 				const itemId = innerItem.id;
 				const listId = this.lists[listIndex].id;
-				this.setItemAndListId({ itemId, listId, guide: Guide });
+				this.ItemidAndListid({ itemId, listId, guide: Guide });
 			},
 		},
 	};

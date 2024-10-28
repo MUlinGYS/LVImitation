@@ -77,6 +77,7 @@
 									innerItem, innerIndex
 								) in item.product || []"
 								:key="innerIndex"
+								@click="handleCommodityClick(innerItem.id)"
 								style="
 									display: flex;
 									flex-direction: column;
@@ -148,7 +149,7 @@
 			};
 		},
 		created() {
-			// 在组件创建时将 guide 设置为 false
+			// 在组件创建时将 guide 设置为 null
 			this.$store.commit('ladiesAudition/setGuideFalse');
 			this.sendPostRequest();
 		},
@@ -255,13 +256,17 @@
 
 				this.selectedIndex = index;
 			},
-			...mapActions('ladiesAudition', ['setItemAndListId']),
-			HomeponentID(itemid, Guide = true) {
+			...mapActions('ladiesAudition', ['ItemidAndListid', 'commodityID']),
+			HomeponentID(itemid, Guide = 1) {
 				const itemId = itemid;
 				const listId = this.tabData.id;
-				console.log(itemId, listId);
+				// console.log(itemId, listId);
 
-				this.setItemAndListId({ itemId, listId, guide: Guide });
+				this.ItemidAndListid({ itemId, listId, guide: Guide });
+			},
+			handleCommodityClick(id) {
+				const Guide = 4;
+				this.commodityID({ commodityID: id, guide: Guide });
 			},
 			async sendPostRequest() {
 				try {
@@ -274,7 +279,7 @@
 					);
 					if (foundItem) {
 						this.items = foundItem.child;
-						console.log(this.items);
+						// console.log(this.items);
 
 						// this.product = foundItem.child.map(
 						// 	(childItem) => childItem.child || []
