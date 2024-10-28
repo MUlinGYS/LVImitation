@@ -22,7 +22,7 @@
 
 <script>
 	import axios from 'axios';
-	import Homeomponent from '../components/Home/Homeponent.vue';
+	import Homeomponent from '../components/Homeponent.vue';
 	import Input from '../components/input.vue';
 
 	export default {

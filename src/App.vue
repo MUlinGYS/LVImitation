@@ -33,7 +33,6 @@
 	import Discovery from '../src/views/Discovery.vue';
 	import Guide from '../src/views/Guide.vue';
 	import detail from './views/detail.vue';
-	import test from './views/test.vue';
 	import { mapState } from 'vuex';
 
 	// 第三方库加速加载字体并进行相应的控制
@@ -49,7 +48,6 @@
 					2: Discovery,
 					3: Guide,
 					4: detail,
-					5: test,
 				},
 			};
 		},
@@ -64,7 +62,6 @@
 			Discovery,
 			Guide,
 			detail,
-			test,
 		},
 		methods: {
 			handleSelect(index) {

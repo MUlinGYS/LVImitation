@@ -25,7 +25,7 @@
 </template>
 <script>
 	import Input from '../components/input.vue';
-	import Selection from '../components/Discovery/Selection.vue';
+	import Selection from '../components/Selection.vue';
 	// import LadiesAudition from '../components/Discovery/MensSelection copy.vue';
 	// import MensSelection from '../components/Discovery/MensSelection.vue';
 	import Guide from './Guide.vue';
