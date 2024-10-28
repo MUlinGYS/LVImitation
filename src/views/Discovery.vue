@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Input></Input>
-		<div class="found">
+		<!-- <div class="found">
 			<el-tabs
 				style="max-width: 100vw"
 				v-model="activeName"
@@ -19,18 +19,23 @@
 						:labels="1"></MensSelection>
 				</el-tab-pane>
 			</el-tabs>
-		</div>
+		</div> -->
+		<Selection></Selection>
 	</div>
 </template>
 <script>
 	import Input from '../components/input.vue';
-	import LadiesAudition from '../components/Discovery/LadiesAudition.vue';
-	import MensSelection from '../components/Discovery/MensSelection.vue';
+	import Selection from '../components/Discovery/Selection.vue';
+	// import LadiesAudition from '../components/Discovery/MensSelection copy.vue';
+	// import MensSelection from '../components/Discovery/MensSelection.vue';
+	import Guide from './Guide.vue';
 	export default {
 		components: {
 			Input,
-			LadiesAudition,
-			MensSelection,
+			// LadiesAudition,
+			// MensSelection,
+			Selection,
+			Guide,
 		},
 		data() {
 			return {

@@ -19,12 +19,9 @@
 					<el-menu-item index="3">
 						<i class="el-icon-s-claim"><p>甄礼指南</p></i>
 					</el-menu-item>
-					<!-- <el-menu-item index="4">
-						<i class="el-icon-suitcase-1"><p>购物袋</p></i>
-					</el-menu-item>
-					<el-menu-item index="5">
-						<i class="el-icon-user"><p>我的</p></i>
-					</el-menu-item> -->
+					<el-menu-item
+						index="4"
+						style="display: none"></el-menu-item>
 				</el-menu>
 			</el-footer>
 		</el-container>
@@ -37,13 +34,13 @@
 	import Guide from '../src/views/Guide.vue';
 	import detail from './views/detail.vue';
 	import test from './views/test.vue';
+	import { mapState } from 'vuex';
 
 	// 第三方库加速加载字体并进行相应的控制
 	import WebFont from 'webfontloader';
 
 	export default {
 		name: 'App',
-
 		data() {
 			return {
 				activeIndex: '1',
@@ -57,11 +54,11 @@
 			};
 		},
 		computed: {
+			...mapState('ladiesAudition', ['guide']),
 			currentComponent() {
-				return this.components[this.activeIndex];
+				return this.components[this.activeIndex] || Home;
 			},
 		},
-		created() {},
 		components: {
 			Home,
 			Discovery,
@@ -75,17 +72,34 @@
 			},
 		},
 		mounted() {
-			// 加速字体加载
-			WebFont.load({
-				custom: {
-					families: ['huipian'],
-					urls: ['../src/assets/fonts/极影毁片文宋-v1.00.ttf'],
-				},
-				// 当字体加载完成时的回调函数
-				active: function () {
-					console.log('字体加载完成');
-				},
+			this.$nextTick(() => {
+				// 根据 guide 参数设置 activeIndex
+				if (this.guide) {
+					this.activeIndex = '3';
+				}
+
+				// 加速字体加载
+				WebFont.load({
+					custom: {
+						families: ['huipian'],
+						urls: ['../src/assets/fonts/极影毁片文宋-v1.00.ttf'],
+					},
+					// 当字体加载完成时的回调函数
+					active: function () {
+						console.log('字体加载完成');
+					},
+				});
 			});
+		},
+		watch: {
+			guide(newVal) {
+				if (newVal) {
+					// 如果当前不是甄礼指南页面，则进行跳转
+					if (this.activeIndex !== '3') {
+						this.activeIndex = '3';
+					}
+				}
+			},
 		},
 	};
 </script>

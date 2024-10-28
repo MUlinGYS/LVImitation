@@ -1,7 +1,8 @@
 <template>
 	<div class="ladies-audition">
 		<div class="ladies-audition-img">
-			男士甄选<svg
+			{{ activeTitle }}
+			<svg
 				t="1729926575767"
 				class="icon"
 				viewBox="0 0 1024 1024"
@@ -16,9 +17,16 @@
 					p-id="9901"></path>
 			</svg>
 		</div>
+
 		<div>
-			<el-tabs :tab-position="tabPosition" style="height: 200px">
-				<el-tab-pane label="新品系列">
+			<el-tabs
+				:tab-position="tabPosition"
+				style="height: 200px"
+				@tab-click="onTabClick">
+				<el-tab-pane
+					v-for="(list, listIndex) in lists"
+					:key="list.id"
+					:label="list.title">
 					<div
 						ref="parentDiv"
 						class="parent-div"
@@ -27,75 +35,92 @@
 							width: 100%;
 							display: flex;
 							flex-wrap: wrap;
-							justify-content: space-evenly;
-							align-content: space-between;
+							align-content: flex-start;
+							justify-content: center;
 						">
 						<div
-							v-for="(box, index) in 10"
-							:key="index"
-							:style="{
-								width: boxWidth + 'px',
-								height: boxWidth + 30 + 'px',
-								marginTop: '5px',
-								marginBottom: '5px',
-							}">
+							v-for="(innerItem, innerIndex) in list.child || []"
+							:key="innerIndex"
+							@click="vuexID(innerItem, listIndex)"
+							style="width: 30vw; height: 36%; padding: 5px 10px">
 							<div
 								class="commodityImg"
 								:style="{
-									width: boxWidth + 'px',
-									height: boxWidth + 'px',
+									backgroundImage: `url(${innerItem.icon})`,
 								}"></div>
 							<p style="margin: 5px; text-align: center">
-								SLENDER 钱夹
+								{{ innerItem.title }}
 							</p>
 						</div>
 					</div>
 				</el-tab-pane>
-				<el-tab-pane label="甄礼之选">甄礼之选</el-tab-pane>
-				<el-tab-pane label="时尚包袋">时尚包袋</el-tab-pane>
-				<el-tab-pane label="小型皮具">小型皮具</el-tab-pane>
 			</el-tabs>
 		</div>
 	</div>
 </template>
 
 <script>
+	import axios from 'axios';
+	import { mapActions } from 'vuex';
+
 	export default {
-		name: 'MensSelection',
+		props: ['labels'],
+		name: 'LadiesAuditionCopy',
 		data() {
 			return {
 				tabPosition: 'left',
-				parentWidth: 0,
+				lists: [],
+				activeTitle: '',
 			};
 		},
-		computed: {
-			boxWidth() {
-				return (this.parentWidth - 10) / 2 - 20; // 减去左右间距
-			},
-		},
-		mounted() {
-			this.$nextTick(() => {
-				this.updateParentWidth();
-			});
-			window.addEventListener('resize', this.updateParentWidth);
-		},
-		beforeDestroy() {
-			window.removeEventListener('resize', this.updateParentWidth);
+		computed: {},
+		created() {
+			// 在组件创建时将 guide 设置为 false
+			this.$store.commit('ladiesAudition/setGuideFalse');
+			this.sendPostRequest();
 		},
 		methods: {
 			updateParentWidth() {
-				this.parentWidth = this.$refs.parentDiv.clientWidth;
+				if (this.$refs.parentDiv) {
+					this.parentWidth = this.$refs.parentDiv.clientWidth;
+				}
+			},
+			async sendPostRequest() {
+				try {
+					const response = await axios.post('/index/category', {
+						data: {
+							labels: this.labels,
+						},
+					});
+					const data = response.data.data;
+					this.lists = data;
+					// 设置默认标题
+					if (this.lists.length > 0) {
+						this.activeTitle = this.lists[0].title;
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			},
+			onTabClick(tab) {
+				this.activeTitle = tab.label;
+			},
+			...mapActions('ladiesAudition', ['setItemAndListId']),
+			vuexID(innerItem, listIndex, Guide = true) {
+				const itemId = innerItem.id;
+				const listId = this.lists[listIndex].id;
+				this.setItemAndListId({ itemId, listId, guide: Guide });
 			},
 		},
 	};
 </script>
 <style scoped>
 	.ladies-audition {
-		height: calc(100vh - 172px);
+		height: calc(100vh - 118px);
 		padding: 0 10px;
 	}
 	.ladies-audition-img {
-		background-image: url('../../assets/lv.png');
+		background-image: url('https://test.eonet.cc/Uploads/images/banner.png');
 		height: 180px;
 		width: 100%;
 		background-size: 100% 100%;
@@ -107,8 +132,10 @@
 		font-size: 2rem;
 	}
 	.commodityImg {
-		background-image: url('../../assets/lv.png');
-		background-size: 100% 100%;
+		width: 100%;
+		height: 75%;
+		background-size: contain; /* 保持图片的原始比例并使其完全适合容器 */
+		background-position: center; /* 将背景图像居中 */
 		background-repeat: no-repeat;
 	}
 	.ladies-audition >>> .el-tabs__item {
@@ -125,28 +152,33 @@
 		overflow-y: auto;
 	}
 
-	.ladies-audition >>> .el-tabs--left .el-tabs__active-bar.is-left,
-	.el-tabs--left .el-tabs__active-bar.is-right,
-	.el-tabs--right .el-tabs__active-bar.is-left,
-	.el-tabs--right .el-tabs__active-bar.is-right {
+	.ladies-audition >>> .el-tabs--left.el-tabs__active-bar.is-left,
+	.el-tabs--left.el-tabs__active-bar.is-right,
+	.el-tabs--right.el-tabs__active-bar.is-left,
+	.el-tabs--right.el-tabs__active-bar.is-right {
 		height: 20px !important;
 		margin-top: 5px;
 		display: none;
 	}
 
 	.ladies-audition >>> .el-tabs--left {
-		height: calc(100vh - 347px) !important;
+		height: calc(100vh - 298px) !important;
 		border-right: 1px solid rgb(228 228 228);
 	}
 
-	.ladies-audition >>> .el-tabs--left .el-tabs__header.is-left {
+	.ladies-audition >>> .el-tabs--left.el-tabs__header.is-left {
 		margin-right: 5px !important;
 	}
 
 	.ladies-audition >>> .el-tab-pane {
 		width: calc(100vw - 112px);
-		height: calc(100vh - 350px);
+		height: calc(100vh - 300px);
 		/* background-color: black; */
 		overflow: auto;
+	}
+
+	/* 侧边黑条 */
+	.ladies-audition >>> .el-tabs__active-bar.is-left {
+		display: none !important;
 	}
 </style>
